@@ -1,6 +1,6 @@
 
 git-hub
--------
+=======
 
 A command to load up the git-hub project page associated with your project.
 
