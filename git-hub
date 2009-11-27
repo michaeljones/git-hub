@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Make sure we have a default for GIT_BROWSER 
+if [ ! -n "$GIT_BROWSER" ]; then
+	GIT_BROWSER="firefox"
+	export GIT_BROWSER
+fi 
+
+# Get the author and project from config values if they've been set
+author=`git config hub.author`
+project=`git config hub.project`
+
+if [ "$author" != "" -a "$project" != "" ]; then
+	echo $GIT_BROWSER http://github.com/$author/$project
+	$GIT_BROWSER http://github.com/$author/$project &
+fi
+
+# Else fall back to parsing the origin url if possible
+remote=`git config remote.origin.url`
+
+if [ "$remote" != "" ]; then
+	url=`echo $remote | sed 's/:/\//g' | sed 's/.git$//' | sed 's/^.*github.com/http:\/\/github.com/'`
+	echo $GIT_BROWSER $url
+	$GIT_BROWSER $url &
+fi
+
+
